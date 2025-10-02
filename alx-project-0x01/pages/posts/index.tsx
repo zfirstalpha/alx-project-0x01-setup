@@ -10,35 +10,37 @@ interface PostsPageProps {
 
 const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [newPost, setNewPost] = useState<PostData | null>(null); // <-- this line is crucial
+  const [post, setPost] = useState<PostData | null>(null); // tutorial-named state
 
-  const handleAddPost = (post: PostData) => {
-    setNewPost({ ...post, id: posts.length + 1 });
+  const handleAddPost = (newPost: PostData) => {
+    setPost({ ...newPost, id: posts.length + 1 }); // assign temporary ID
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="p-4">
-        <div className="flex justify-between">
-          <h1 className=" text-2xl font-semibold">Post Content</h1>
+      <main className="p-4 flex-grow">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-semibold">Post Content</h1>
           <button
             onClick={() => setModalOpen(true)}
-            className="bg-blue-700 px-4 py-2 rounded-full text-white"
+            className="bg-blue-700 px-4 py-2 rounded-full text-white hover:bg-blue-800 transition"
           >
             Add Post
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.map(({ title, body, userId, id }: PostProps, key: number) => (
             <PostCard title={title} body={body} userId={userId} id={id} key={key} />
           ))}
-          {newPost && (
+
+          {post && (
             <PostCard
-              title={newPost.title}
-              body={newPost.body}
-              userId={newPost.userId}
-              id={newPost.id!}
+              title={post.title}
+              body={post.body}
+              userId={post.userId}
+              id={post.id!}
             />
           )}
         </div>
